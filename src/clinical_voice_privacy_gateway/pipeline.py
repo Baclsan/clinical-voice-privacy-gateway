@@ -35,6 +35,8 @@ class PrivacyGateway:
         idempotency_key: str | None = None,
     ) -> Submission:
         selected = Route.parse(route)
+        if idempotency_key is None and getattr(self._sink, "requires_explicit_idempotency_key", False):
+            raise ValueError("durable provider handoff requires an explicit stable idempotency key")
         key = idempotency_key or str(uuid.uuid4())
 
         if selected is Route.NORMAL:

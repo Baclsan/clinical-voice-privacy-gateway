@@ -1,7 +1,17 @@
 """Clinical Voice Privacy Gateway public API."""
 
 from .boundary import DisclosureBoundary
-from .errors import BoundaryError, PrivacyGatewayError, RouteError, TransformError, VerificationError
+from .errors import (
+    BoundaryError,
+    HandoffError,
+    HandoffStateError,
+    HandoffUncertainError,
+    PrivacyGatewayError,
+    RouteError,
+    TransformError,
+    VerificationError,
+)
+from .handoff import DurableProviderSink, FileHandoffJournal, HandoffRecord, HandoffState
 from .pipeline import PrivacyGateway
 from .provider import ProviderSink, Submission
 from .routing import Route
@@ -13,7 +23,14 @@ __all__ = [
     "BoundaryError",
     "CandidateSafeText",
     "DisclosureBoundary",
+    "DurableProviderSink",
     "EgressPayload",
+    "FileHandoffJournal",
+    "HandoffError",
+    "HandoffRecord",
+    "HandoffState",
+    "HandoffStateError",
+    "HandoffUncertainError",
     "PrivacyGateway",
     "PrivacyGatewayError",
     "PrivacyTransform",

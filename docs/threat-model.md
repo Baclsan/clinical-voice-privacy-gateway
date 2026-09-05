@@ -16,11 +16,15 @@ A routing, transform, verifier, or integration bug accidentally sends clinical R
 4. Transform errors, verifier errors, and verifier rejection happen before provider submission.
 5. Tests record every provider payload and assert that synthetic clinical RAW never appears there.
 
-## Out of scope for v0.1
+## Additional v0.2 property
+
+6. Durable handoff records are written before provider attempts; restart retries use the same explicit idempotency key, and accepted records do not resubmit. The journal never stores payload text.
+
+## Out of scope for v0.2
 
 - Complete medical de-identification or regulatory certification
 - Speech-recognition security
 - Model sandboxing
-- Durable crash recovery and idempotent network admission
+- Cross-process locking and distributed handoff coordination
 - Real patient data
 - Provider-specific authentication
