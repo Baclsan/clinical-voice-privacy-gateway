@@ -24,9 +24,9 @@ The package runtime currently uses only the Python standard library. Development
 
 ## Licensing status
 
-A repository license must be selected only after the copyright holder confirms that they have the rights needed to license the public implementation and any protectable material influenced by the private reference.
+On 2026-09-05, the copyright holder explicitly selected the Apache License, Version 2.0 for this public repository. The repository-level `LICENSE` file contains the Apache-2.0 license text and package metadata declares the SPDX expression `Apache-2.0`.
 
-Until a `LICENSE` file and corresponding package metadata are committed, do not assume permission to copy, redistribute, or modify this repository beyond rights provided by applicable law.
+This license applies to the public repository content made available here. It does not grant rights to any separate private reference implementation, production deployment, model/runtime asset, credential, database, transcript, or third-party component that is not distributed as part of this repository.
 
 ## Privacy boundary for contributions
 
