@@ -46,8 +46,12 @@ The core remains provider-neutral and intentionally excludes production speech r
 
 The included verifier is a demonstration safety primitive, **not** a complete de-identification standard, regulatory compliance claim, or medical device.
 
-See `docs/architecture.md`, `docs/privacy-boundary.md`, and `docs/threat-model.md`.
+See `docs/architecture.md`, `docs/privacy-boundary.md`, `docs/threat-model.md`, `PROVENANCE.md`, and `CHANGELOG.md`.
+
+## Release status
+
+The current package code state is `0.2.0`, but no tagged public release has been published yet. Release gates are tracked in `docs/release-checklist.md`.
 
 ## License
 
-License selection is pending provenance review. Do not assume that private reference implementations or third-party components are covered by this repository until explicitly documented.
+License selection is pending explicit copyright-holder approval after provenance review. Until a `LICENSE` file is committed, do not assume an open-source license applies to this repository.
