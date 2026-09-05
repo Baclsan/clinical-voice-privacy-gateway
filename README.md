@@ -1,73 +1,47 @@
 # Clinical Voice Privacy Gateway
 
-Local-first privacy infrastructure for clinical voice AI workflows.
+Local-first privacy boundary primitives for clinical voice AI workflows.
 
-The project explores a simple security boundary: identifiable clinical audio and raw transcripts should be processed locally before any external AI provider receives text. Normal non-clinical voice traffic may follow a separate route.
+The core rule is deliberately asymmetric:
 
-## Core idea
+- **NORMAL** traffic may send a raw transcript to an external provider.
+- **CLINICAL** traffic must keep raw transcript text local. Only deterministic-verifier-approved `VerifiedSafeText` may cross the disclosure boundary.
 
-```text
-Voice input
-    |
-    v
-Local speech-to-text
-    |
-    v
-Route selection
-    |
-    +---------------- NORMAL ----------------> application / AI provider
-    |
-    +--------------- CLINICAL
-                         |
-                         v
-                local de-identification
-                         |
-                         v
-                deterministic verifier
-                         |
-                         v
-                  VERIFIED SAFE
-                         |
-                         v
-                application / AI provider
-```
-
-## Design goals
-
-- Local-first handling of identifiable clinical content
-- Routing before disclosure to external providers
-- Fail-closed privacy decisions
-- Deterministic verification of de-identified output
-- Clear separation between raw and safe data
-- Testable privacy invariants
-- Provider-agnostic interfaces
-
-## Non-goals
-
-This repository is not a medical device and does not provide medical advice, diagnosis, or treatment. It is an experimental software project focused on privacy architecture for voice-enabled AI systems.
-
-## Privacy rule
-
-Real patient data, credentials, production configuration, private transcripts, and deployment-specific secrets must never be committed to this repository. Examples and tests should use synthetic data only.
-
-## Status
-
-Early open-source extraction and design phase. The initial public implementation will be derived as a clean-room-style, deployment-neutral package rather than publishing private production history or configuration.
-
-## Planned structure
+## Minimal architecture
 
 ```text
-src/                 reusable privacy gateway components
-tests/               privacy and routing invariants
-docs/                architecture and threat model
-examples/synthetic/  synthetic demonstration inputs
-.github/workflows/   CI
+voice/audio -> local STT -> explicit route
+
+NORMAL   -> RawTranscript ---------------------> DisclosureBoundary -> ProviderSink
+CLINICAL -> RawTranscript -> local transform
+                           -> candidate
+                           -> deterministic verifier
+                           -> VerifiedSafeText -> DisclosureBoundary -> ProviderSink
 ```
 
-## Security
+Unknown routes and transform/verifier failures fail closed before any provider call.
 
-Security and privacy issues will be documented in `SECURITY.md` as the project matures. Please do not include real clinical or personally identifiable data in reports.
+## Why separate security types?
+
+`RawTranscript`, `CandidateSafeText`, and `VerifiedSafeText` are intentionally distinct. `VerifiedSafeText` cannot be directly constructed by normal callers; it is minted by a passing verifier. NORMAL raw text is never mislabeled as verified-safe clinical text.
+
+## Test the invariant
+
+```bash
+python -m pip install -e '.[test]'
+python -m pytest
+```
+
+The tests use recording fake sinks and synthetic identifiers to prove that clinical raw text is absent from every provider submission.
+
+## Scope
+
+v0.1 is provider-neutral and intentionally excludes production speech recognition, local-model runtimes, messaging-platform integrations, agent-framework internals, private databases, deployment configuration, and real patient data.
+
+The included verifier is a demonstration safety primitive, **not** a complete de-identification standard, regulatory compliance claim, or medical device.
+
+See `docs/architecture.md`, `docs/privacy-boundary.md`, and `docs/threat-model.md`.
 
 ## License
 
-License selection is pending a provenance review of any code that may be extracted into the public implementation.
+License selection is pending provenance review. Do not assume that private reference implementations or third-party components are covered by this repository until explicitly documented.
