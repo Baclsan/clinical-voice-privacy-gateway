@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,7 +8,8 @@ version = "0.2.0"
 description = "Local-first privacy boundary primitives for clinical voice AI workflows."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "License pending provenance review" }
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 authors = [{ name = "Clinical Voice Privacy Gateway contributors" }]
 dependencies = []
 
