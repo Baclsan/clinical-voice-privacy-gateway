@@ -50,8 +50,16 @@ See `docs/architecture.md`, `docs/privacy-boundary.md`, `docs/threat-model.md`, 
 
 ## Release status
 
-The current package code state is `0.2.0`, but no tagged public release has been published yet. Release gates are tracked in `docs/release-checklist.md`.
+The current package version is `0.2.0`. Release gates are tracked in `docs/release-checklist.md`.
+
+## Support the project
+
+If you find this project useful and would like to support its continued development, donations are welcome.
+
+**Ethereum / EVM:** `0xaace58c7fed05dc1095f5d88ca7b6f4c98986104`
+
+Donations are completely optional and do not provide additional license rights, support guarantees, influence, or priority.
 
 ## License
 
-License selection is pending explicit copyright-holder approval after provenance review. Until a `LICENSE` file is committed, do not assume an open-source license applies to this repository.
+Licensed under the Apache License, Version 2.0 (`Apache-2.0`). See `LICENSE`.
