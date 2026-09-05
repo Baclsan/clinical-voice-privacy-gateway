@@ -1,7 +1,9 @@
 """Security-relevant value types.
 
-`VerifiedSafeText` is intentionally not directly constructible by callers. It is
-minted only after a verifier returns a passing decision.
+`VerifiedSafeText` is minted only after a verifier passes. `EgressPayload` is
+minted only by the disclosure boundary. These capabilities prevent accidental
+API misuse inside one Python process; they are not a sandbox against malicious
+code with module introspection access.
 """
 
 from __future__ import annotations
@@ -11,6 +13,7 @@ from dataclasses import dataclass
 
 
 _VERIFIED_SEAL = object()
+_EGRESS_SEAL = object()
 
 
 def sha256_text(text: str) -> str:
@@ -63,9 +66,41 @@ class VerifiedSafeText:
         return self._seal is _VERIFIED_SEAL and self.sha256 == sha256_text(self.text)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, init=False)
 class EgressPayload:
     text: str
     sha256: str
     route: str
     payload_kind: str
+    _seal: object
+
+    def __init__(self, *_: object, **__: object) -> None:
+        raise TypeError("EgressPayload can only be created by DisclosureBoundary")
+
+    @classmethod
+    def _mint(
+        cls,
+        *,
+        text: str,
+        sha256: str,
+        route: str,
+        payload_kind: str,
+        seal: object,
+    ) -> "EgressPayload":
+        if seal is not _EGRESS_SEAL or sha256 != sha256_text(text):
+            raise TypeError("invalid egress capability")
+        instance = object.__new__(cls)
+        object.__setattr__(instance, "text", text)
+        object.__setattr__(instance, "sha256", sha256)
+        object.__setattr__(instance, "route", route)
+        object.__setattr__(instance, "payload_kind", payload_kind)
+        object.__setattr__(instance, "_seal", seal)
+        return instance
+
+    def _is_authentic(self) -> bool:
+        expected_kind = "raw" if self.route == "normal" else "verified_safe" if self.route == "clinical" else None
+        return (
+            self._seal is _EGRESS_SEAL
+            and expected_kind == self.payload_kind
+            and self.sha256 == sha256_text(self.text)
+        )

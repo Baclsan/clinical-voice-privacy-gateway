@@ -19,3 +19,15 @@ class VerificationError(PrivacyGatewayError):
 
 class BoundaryError(PrivacyGatewayError):
     """Raised when an object is not eligible for the requested egress path."""
+
+
+class HandoffError(PrivacyGatewayError):
+    """Base class for durable provider handoff failures."""
+
+
+class HandoffStateError(HandoffError):
+    """Raised when durable state is invalid or conflicts with the current payload."""
+
+
+class HandoffUncertainError(HandoffError):
+    """Raised when remote admission may have happened but is not locally confirmed."""

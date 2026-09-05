@@ -34,9 +34,15 @@ python -m pytest
 
 The tests use recording fake sinks and synthetic identifiers to prove that clinical raw text is absent from every provider submission.
 
+## Durable handoff (v0.2)
+
+`DurableProviderSink` adds an atomic local metadata journal around provider submission. It persists the handoff state before the network call, requires a caller-supplied stable idempotency key, and reuses that key after restart. The journal stores hashes and state only — never transcript text, egress text, or the plaintext idempotency key.
+
+See `docs/durable-handoff.md`.
+
 ## Scope
 
-v0.1 is provider-neutral and intentionally excludes production speech recognition, local-model runtimes, messaging-platform integrations, agent-framework internals, private databases, deployment configuration, and real patient data.
+The core remains provider-neutral and intentionally excludes production speech recognition, local-model runtimes, messaging-platform integrations, agent-framework internals, private databases, deployment configuration, and real patient data.
 
 The included verifier is a demonstration safety primitive, **not** a complete de-identification standard, regulatory compliance claim, or medical device.
 
