@@ -21,8 +21,8 @@ Use this checklist before publishing the first tagged release.
 
 ## Build and CI
 
-- [ ] Clean editable install succeeds after the release metadata changes.
-- [ ] Full test suite passes on all supported Python versions in GitHub Actions after the release metadata changes.
+- [x] Clean editable install succeeds after the release metadata changes.
+- [x] Full test suite passes on Python 3.11, 3.12, and 3.13 in GitHub Actions after the release metadata changes.
 - [x] Version in `pyproject.toml` matches the intended `v0.2.0` tag.
 - [x] `CHANGELOG.md` matches the release contents.
 
